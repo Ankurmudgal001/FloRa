@@ -1,0 +1,73 @@
+1. Setting up ip for controller
+
+sudo ip addr add 192.168.1.10/24 dev eth0
+sudo ip link set dev eth0 up
+
+2. Setting up openflow bridge
+
+sudo ovs-vsctl add-br br0
+sudo ovs-vsctl set-controller br0 tcp:192.168.1.10:6633
+sudo ovs-vsctl set bridge br0 protocols=OpenFlow13
+
+3. Adding ports
+
+sudo ovs-vsctl add-port br0 eth1
+sudo ovs-vsctl add-port br0 eth2
+sudo ovs-vsctl add-port br0 eth3
+sudo ovs-vsctl add-port br0 eth4
+
+4. Assigning ip to ports
+
+sudo ip netns add host1
+sudo ip netns add host2
+sudo ip netns add host3
+sudo ip netns add host4
+
+5. Creating veth pairs
+sudo ip link add veth1 type veth peer name veth1-br
+sudo ip link add veth2 type veth peer name veth2-br
+sudo ip link add veth3 type veth peer name veth3-br
+sudo ip link add veth4 type veth peer name veth4-br
+
+6. Attaching veth pairs to namespaces
+sudo ip link set veth1 netns host1
+sudo ip link set veth2 netns host2
+sudo ip link set veth3 netns host3
+sudo ip link set veth4 netns host4
+
+7. Attaching veth pairs to the bridge
+sudo ovs-vsctl add-port br0 veth1-br
+sudo ovs-vsctl add-port br0 veth2-br
+sudo ovs-vsctl add-port br0 veth3-br
+sudo ovs-vsctl add-port br0 veth4-br
+
+8. Bringing up the veth interfaces in the namespaces and assign IP addresses
+sudo ip netns exec host1 ip addr add 192.168.1.11/24 dev veth1
+sudo ip netns exec host1 ip link set dev veth1 up
+
+sudo ip netns exec host2 ip addr add 192.168.1.12/24 dev veth2
+sudo ip netns exec host2 ip link set dev veth2 up
+
+sudo ip netns exec host3 ip addr add 192.168.1.13/24 dev veth3
+sudo ip netns exec host3 ip link set dev veth3 up
+
+sudo ip netns exec host4 ip addr add 192.168.1.14/24 dev veth4
+sudo ip netns exec host4 ip link set dev veth4 up
+
+9. Bringing up the bridge interfaces
+sudo ip link set dev veth1-br up
+sudo ip link set dev veth2-br up
+sudo ip link set dev veth3-br up
+sudo ip link set dev veth4-br up
+
+10. Bring up the bridge 
+sudo ip link set dev br0 up
+
+11. configuration Testing
+
+sudo ovs-vsctl show
+sudo ip netns exec host1 ping -c 4 192.168.1.12
+sudo ip netns exec host2 ping -c 4 192.168.1.13
+sudo ip netns exec host3 ping -c 4 192.168.1.14
+sudo ip netns exec host4 ping -c 4 192.168.1.11
+
