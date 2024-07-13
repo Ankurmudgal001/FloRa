@@ -1,0 +1,26 @@
+
+   47  pip3 install ryu
+   48  sudo apt install python3-ryu
+   49  sudo apt install git
+   50  git clone https://github.com/osrg/ryu
+   51  cd ryu
+   52  ls
+   53  python3 ./setup.py install
+   54  sudo python3 ./setup.py install
+   55  cd ryu
+   56  ryu-manager ryu.app.simple_switch_13
+   57  pip install netaddr
+   58  ryu-manager ryu.app.simple_switch_13
+   59  pip install eventlet
+   60  sudo apt install python3-eventlet
+   61  ryu-manager ryu.app.simple_switch_13
+   62  sudo apt install python3-oslo_config
+   63  sudo apt install python3-oslo.config
+   64  ryu-manager ryu.app.simple_switch_13
+   65  sudo apt install python3-routes
+   66  ryu-manager ryu.app.simple_switch_13
+   67  sudo apt install python3-tinyrpc
+   68  ryu-manager ryu.app.simple_switch_13
+   69  exit
+   86  exit
+   87  history > hist.txt

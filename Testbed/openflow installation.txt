@@ -1,0 +1,21 @@
+ sudo apt update
+   1  sudo apt upgrade
+   2  sudo apt install ntp openvswitch-common openvswitch-switch wireshark 
+   3  sudo ovs-vsctl show
+   4  sudo ovs-vsctl add-br br0
+   5  sudo ovs-vsctl add-port br0 eth1
+   6  sudo ovs-vsctl add-port br0 eth0
+   7  sudo ovs-vsctl show
+   8  sudo ovs-vsctl set-controller br0 localhost:6653
+   9  sudo ovs-vsctl show
+   10  sudo ip addr add 192.168.1.0/24 dev br0
+   11  sudo ip addr add 192.168.1.1/24 dev br0
+   12  sudo ip link set br0 up
+   13  sudo ovs-vsctl show
+   14  sudo ovs-vsctl set-controller br0 tcp:127.0.0.1:6653 protocol=OpenFlow10
+   15  sudo ovs-vsctl show3
+   16    ifconfig
+   17  sudo usermod -aG wireshark $USER
+   18  wireshark
+   19  sudo ovs-ofctl dump-flows br0
+   20  exit
